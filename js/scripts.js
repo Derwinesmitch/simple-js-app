@@ -15,3 +15,22 @@ let pokemonList = [
         types: ["Water"],
     },
 ]
+
+
+for (let i = 0; i < pokemonList.length; i++){
+   
+//console.log(pokemonList[i].name)
+
+if(pokemonList[i].height >= 0.6){
+    document.write(pokemonList[i].name + " Height " + pokemonList[i].height + "" + "Wow its a big Pokemon!")
+} else {
+    document.write(pokemonList[i].name + " Height " + pokemonList[i].height)
+}
+
+//document.write("Name: " + pokemonList[i].name + " Height: " + pokemonList[i].height) 
+}
+    
+
+
+
+
