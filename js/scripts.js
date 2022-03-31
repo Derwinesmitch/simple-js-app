@@ -16,8 +16,12 @@ let pokemonList = [
     },
 ]
 
+pokemonList.forEach(function(name)  {
+    console.log(name);
+});
 
-for (let i = 0; i < pokemonList.length; i++){
+
+//for (let i = 0; i < pokemonList.length; i++){
    
 //console.log(pokemonList[i].name)
 
@@ -34,3 +38,11 @@ if(pokemonList[i].height >= 0.6){
 
 
 
+function divide(dividend,divisor){
+    if(divisor === 0)
+        return "You´re trying to divide by zero."
+}else{
+    let result = dividend / divisor;
+    return result;
+}
+}
