@@ -2,17 +2,12 @@ let pokemonRepository = (function(){
     let pokemonList = [];
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
-   
-
-
-   
-
 
    function add (pokemon) {
        if(
            typeof pokemon === "object" &&
-            "name" in pokemon //&& 
-        //    "detailsUrl" in pokemon
+            "name" in pokemon && 
+           "detailsUrl" in pokemon
        ) {
            pokemonList.push(pokemon);
        } else {
@@ -69,13 +64,121 @@ let pokemonRepository = (function(){
     }
 
 
-   function showDetails(pokemon){
-       loadDetails(pokemon).then(function(){
-           console.log(pokemon);
+   function showDetails(item){
+       loadDetails(item).then(function(){
+           showModal(item);
        });
    }
 
+ let modalContainer = document.querySelector('#modal-container');
 
+   
+   function showModal(pokemon){
+       let modalContainer = document.queryselector('#modal-container');
+       modalContainer.innerHTML = '';
+
+       let modal = document.createElement('div');
+       modal.classList.add('modal');
+
+       let closeButtonElement = document.createElement('button');
+       closeButtonElement.classList.add('modal-close');
+       closeButtonElement.innerText = 'Close';
+       closeButtonElement.addEventListener('click', hideModal);
+
+       let titleElement = document.createElement ('h1');
+       titleElement.innerText = pokemon.name;
+
+       let contentElement = document.createElement('p');
+        contentElement.innertext = "Height: " + pokemon.height;
+
+       let imageElement = document.createElement('img');
+       imageElement.classList.add('image-class');
+       imageElement.setAttribute('src', pokemon.imageUrl);
+       
+
+        modal.appendChild(closeButtonElement);
+        modal.appendChild(titleElement);
+        modal.appendChild(contentElement);
+        modalContainer.appendChild(modal);
+
+        modalContainer.classList.add('is-visible');
+   }
+
+
+
+   function hideModal() {
+     let modalContainer = document.querySelector('#modal-container');
+       modalContainer.classList.remove('is-visible');
+   }
+
+   function showDialog(title, text){
+       showModal(title, text);
+       let modalContainer = document.querySelector('#modal-container');
+       let modal = modalContainer.querySelector('.modal');
+
+       let confirmButton = document.createElement('button');
+       confirmButton.classList.add('modal-cancel');
+       cancelButton.innerText = 'Cancel';
+
+       modal.appendChild(confirmButton);
+       modal.appendChild(cancelButton);
+
+       confirmButton.focus();
+
+       return new Promise((resolve, reject) => {
+           cancelButton.addEventListener('click', hideModal);
+           confirmButton.addEventListener('click', () => {
+               dialogPromiseReject = null;
+               hideModal();
+               resolve();
+           });
+           dialogPromiseReject = reject;
+       });
+   }    
+   let dialogPromiseReject;
+
+   function hideModal(){
+       let modalContainer = document.querySelector('#modal-container');
+       modalContainer.classList.remove('is-visible');
+
+       if (dialogPromiseReject) {
+           dialogPromiseReject();
+           dialogPromiseReject = null;
+       }
+   }
+
+
+
+
+   let closeButtonElement = document.createElement('button');
+   closeButtonElement.classList.add('modal-close');
+   closeButtonElement.innerText = 'Close';
+   closeButtonElement.addEventListener('click', hideModal);
+
+   window.addEventListener('keydown', (e) => {
+       let modalContainer = document.querySelector('#modal-container');
+       if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+           hideModal();
+       }
+   });
+
+//    modalContainer.addEventListener('click', (e) =>{
+//        let target = e.target;
+//        if (target === modalContainer) {
+//            hideModal();
+//        }
+//    });
+//    document.querySelector('#show-dialog').addEventListener('click', () => {
+//        showDialog('Confrm action', 'Are you sure you want to do this?').then(function(){
+//            alert('confirmed!');
+//        }, () => {
+//            alert('not confirmed');
+//        });
+//    });
+ 
+//    document.querySelector('#show-modal').addEventListener('click', () => {
+//       showModal('Modal title', 'This is the modal content!');
+//    });
     return{
 
         add: add,
@@ -87,13 +190,18 @@ let pokemonRepository = (function(){
    };
 })();
 
+
+
+
+
 //console.log(pokemonRepository.getAll());
 
-pokemonRepository.loadList().then(function(){
-pokemonRepository.getAll().forEach(function(pokemon)   {
-    pokemonRepository.addListItem(pokemon);
-});
-});
+
+// pokemonRepository.loadList().then(function(){
+// pokemonRepository.getAll().forEach(function(pokemon)   {
+//     pokemonRepository.addListItem(pokemon);
+// });
+// });
 
 
     //document.write("Name: " + pokemon.name + " (Height: " + pokemon.height + ". Types: " + pokemon.types + ".)");
@@ -166,3 +274,57 @@ pokemonRepository.getAll().forEach(function(pokemon)   {
     //         types: ["Water"],
     //     },
     //    ];
+    //    function validateEmail(){
+//        let value = emailInput.value;
+//     //    let hasAtSign = value.indexOf('@') > -1;
+//     //    let hasDot = value.indexOf('.') > -1;
+//     //    return value && hasAtSign && hasDot;
+//         if (!value){
+//             showErrorMessage(emailInput, 'Email is a required field.');
+//             return false;
+//         }
+//         if (value.indexOf('@') === -1){
+//             showErrorMessage(emailInput, 'You must enter a valid email address');
+//             return false;
+//         }
+//         showErrorMessage(emailInput, null);
+//         return true;
+//    }
+
+//    function validatePassword(){
+//        let value = passwordInput.value;
+//     //    return value && value.length >= 8;
+//         if (!value){
+//             showErrorMessage(passwordInput, 'Password is a require field')
+//             return false;
+//         }
+//         if (value.length < 8) {
+//             showErrorMessage(passwordInput, 'The password needs to be at least 8 characters long');
+//             return false;
+//         }
+//         showErrorMessage(passwordInput, null);
+//         return true;
+//    }
+
+//    function showErrorMessage (input, message) {
+//        let container = input.parentElement;
+//        let error = container.querySelector('.error-message');
+//        if (error) {
+//            container.removeChild(error);
+//        }
+//        if (message) {
+//            let error = document.createElement('div');
+//            error.classList.add('error-message');
+//            error.innerText = message;
+//            container.appendChild(error);
+//        }
+//    }
+
+//    function validateForm(){
+//         let isValidEmail = validateEmail();
+//         let isValidPassword = validatePassword();
+//         // return validateEmail() && validatePassword();
+//         return isValidEmail && isValidPassword;
+//    } 
+//    emailInput.addEventListener('input', validateEmail);
+//    passwordInput.addEventListener('input', validatePassword);
