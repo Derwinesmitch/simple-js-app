@@ -3,3 +3,18 @@ body{
     text-align: center;
 }
 
+ul {
+    list-style-type: none;
+}
+
+.pokemon-list-item {
+    background-color: rgba(67, 185, 214, 0.685);
+    padding: 5px;
+    margin: 2px;
+}
+
+.pokemon-list-item > button {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(12,159,173,1) 35%, rgba(0,212,255,1) 100%);
+}
+
